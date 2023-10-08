@@ -26,5 +26,22 @@ jobs:
     - name: Build Project
       run: ./gradlew assemble
       
-    - name: Espresso Tests
-      run: ./gradlew connectedAndroidTest
+    - name: Set up Android emulator
+      uses: ReactiveCircus/android-emulator-runner@v2.28.0
+      with:
+        api-level: 31 
+        package-version: '31' 
+
+    - name: Start emulator
+      run: |
+        emulator -avd Pixel 4 XL API 31 -no-window -no-audio -gpu off &
+        android-wait-for-emulator
+
+    - name: List devices
+      run: |
+        adb devices
+
+    - name: Build and run Espresso tests
+      run: |
+        ./gradlew assembleDebug
+        ./gradlew connectedAndroidTest
