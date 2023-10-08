@@ -19,7 +19,6 @@ import org.junit.Test;
 
 
 public class TestAndroid {
-
     @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
