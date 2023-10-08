@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class ViewContacts extends AppCompatActivity {
     private EditText contactsListView;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
