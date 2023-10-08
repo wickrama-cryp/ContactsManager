@@ -30,11 +30,16 @@ jobs:
       uses: ReactiveCircus/android-emulator-runner@v2.28.0
       with:
         api-level: 31 
-        package-version: '31' 
+        emulator-build: latest
+        script: |
+          echo "y" | sdkmanager "system-images;android-31;google_apis;x86"
+          avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-31;google_apis;x86"
+          emulator -avd emulator-name -no-window -no-audio -gpu off &
+          android-wait-for-emulator
 
     - name: Start emulator
       run: |
-        emulator -avd Pixel 4 XL API 31 -no-window -no-audio -gpu off &
+        emulator -avd Pixel_4_XL_API_31 -no-window -no-audio -gpu off &
         android-wait-for-emulator
 
     - name: List devices
