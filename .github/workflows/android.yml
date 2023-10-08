@@ -25,3 +25,6 @@ jobs:
 
     - name: Build Project
       run: ./gradlew assemble
+      
+    - name: Espresso Tests
+      run: ./gradlew connectedAndroidTest
