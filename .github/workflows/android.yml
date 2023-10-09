@@ -29,7 +29,7 @@ jobs:
     - name: Download and Install Android SDK
       run: |
         wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-        unzip -q commandlinetools-linux-7583922_latest.zip -d $GITHUB_WORKSPACE/android-sdk
+        unzip -q commandlinetools-linux-7583922_latest.zip -d android-sdk
         export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
       working-directory: $GITHUB_WORKSPACE
@@ -38,12 +38,10 @@ jobs:
       run: |
         echo "export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk" >> $GITHUB_ENV
         echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
-      shell: bash
 
     - name: Create AVD
       run: |
         avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-30;google_apis;x86"
-      shell: bash
 
     - name: Start Android Emulator
       run: emulator -avd Pixel_4_XL_API_31 -no-window -no-audio -gpu off &
