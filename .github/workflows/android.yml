@@ -1,34 +1,38 @@
-name: Android CI
+name: Android UI Testing
 
-on: pull_request
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - uses: actions/checkout@v4.1.0
-
-    - name: set up JDK
-      uses: actions/setup-java@v3.13.0
+    - name: Set up Java
+      uses: actions/setup-java@v2
       with:
-        java-version: 19
-        distribution: 'corretto'
-        
-    - name: Set execute permission
-      run: chmod +x ./gradlew
+        java-version: 11
 
-    - name: RunAndroidTest
-      uses: ReactiveCircus/android-emulator-runner@v2.28.0
-      with: 
+    - name: Set up Android Emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
         api-level: 30
-        emulator-build: latest
-        script: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86"
+        emulator-build: default
 
-    - name: Run test
+    - name: Start Emulator
+      run: emulator -avd test -no-window -no-audio -gpu off &
+    
+
+    - name: Wait for Emulator
+      run: android-wait-for-emulator
+
+    - name: Run UI Tests
       run: ./gradlew connectedAndroidTest
-      
 
-   
+    - name: Terminate Emulator
+      run: adb emu kill
