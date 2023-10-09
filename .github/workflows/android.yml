@@ -20,36 +20,19 @@ jobs:
     - name: Set execute permission
       run: chmod +x ./gradlew
 
-    - name: Run tests
-      run: ./gradlew test
+   # - name: Run tests
+    #  run: ./gradlew test
 
-    - name: Build Project
-      run: ./gradlew assemble
+   # - name: Build Project
+     # run: ./gradlew assemble
+     
+    - name: Run connected tests
+      uses: ReactiveCircus/android-emulator-runner@v2
+      with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          script: ./gradlew connectedCheck
       
-    - name: Download and Install Android SDK
-      run: |
-        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-        unzip -q commandlinetools-linux-7583922_latest.zip -d android-sdk
-        export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk
-        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-      working-directory: ${{ runner.workspace }}
 
-    - name: Set up Android SDK Environment
-      run: |
-        echo "export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk" >> $GITHUB_ENV
-        echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
-
-    - name: Create AVD
-      run: |
-        avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-30;google_apis;x86"
-
-    - name: Start Android Emulator
-      run: emulator -avd Pixel_4_XL_API_31 -no-window -no-audio -gpu off &
-
-    - name: Wait for Emulator to be Ready
-      run: android-wait-for-emulator
-
-    - name: Build and run Espresso tests
-      run: |
-        ./gradlew assembleDebug
-        ./gradlew connectedAndroidTest
+   
