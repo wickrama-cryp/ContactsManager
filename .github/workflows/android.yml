@@ -31,11 +31,11 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
         unzip -q commandlinetools-linux-7583922_latest.zip -d $ANDROID_HOME/cmdline-tools
         mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "platforms;android-31" "system-images;android-31;google_apis;x86" "build-tools;31.0.0"
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "platforms;android-30" "system-images;android-30;google_apis;x86" "build-tools;30.0.0"
 
     - name: Create and start emulator
       run: |
-        echo "no" | avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-31;google_apis;x86"
+        echo "no" | avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-30;google_apis;x86"
         emulator -avd Pixel_4_XL_API_31 -no-window -no-audio -gpu off &
         android-wait-for-emulator
         
