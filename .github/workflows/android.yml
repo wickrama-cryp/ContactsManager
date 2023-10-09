@@ -32,7 +32,7 @@ jobs:
         unzip -q commandlinetools-linux-7583922_latest.zip -d android-sdk
         export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-      working-directory: $GITHUB_WORKSPACE
+      working-directory: ${{ runner.workspace }}
 
     - name: Set up Android SDK Environment
       run: |
