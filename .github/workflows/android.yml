@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: 19
+        
+    - name: Terminate Emulator
+      run: /Users/runner/Library/Android/sdk/platform-tools/adb -s emulator-5554 emu kill
+
 
     - name: Set up Android Emulator
       uses: reactivecircus/android-emulator-runner@v2
@@ -26,7 +30,6 @@ jobs:
 
     - name: Start Emulator
       run: emulator -avd test -no-window -no-audio -gpu off &
-      background: true
 
     - name: Wait for Emulator
       run: android-wait-for-emulator
