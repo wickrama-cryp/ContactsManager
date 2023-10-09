@@ -1,4 +1,4 @@
-name: Android UI Testing
+name: Android Emulator Workflow
 
 on:
   push:
@@ -17,24 +17,21 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: 19
-        
-    - name: Terminate Emulator
-      run: /Users/runner/Library/Android/sdk/platform-tools/adb -s emulator-5554 emu kill
 
     - name: Set up Android Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 30
-        emulator-build: default
+        api-level: 30  # Specify the desired Android API level
+        emulator-build: default  # Use a valid emulator build, not "latest"
 
     - name: Start Emulator
       run: emulator -avd test -no-window -no-audio -gpu off &
-    
+      background: true
 
     - name: Wait for Emulator
       run: android-wait-for-emulator
 
-    - name: Run UI Tests
+    - name: Run Tests
       run: ./gradlew connectedAndroidTest
 
     - name: Terminate Emulator
