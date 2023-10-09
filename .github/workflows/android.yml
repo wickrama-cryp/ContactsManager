@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
 
@@ -20,19 +20,11 @@ jobs:
     - name: Set execute permission
       run: chmod +x ./gradlew
 
-   # - name: Run tests
-    #  run: ./gradlew test
-
-   # - name: Build Project
-     # run: ./gradlew assemble
-     
-    - name: Run connected tests
-      uses: ReactiveCircus/android-emulator-runner@v2
-      with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          script: ./gradlew connectedCheck
+    - name: RunAndroidTest
+      uses: ReactiveCircus/android-emulator-runner@v2.28.0
+      with: 
+        api-level: 30
+        scripts: ./gradlew connectedDebugAndroidTest
       
 
    
