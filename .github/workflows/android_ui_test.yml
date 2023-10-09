@@ -1,0 +1,48 @@
+name: Android UI Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Grant execute permission to Gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build and Test
+        run: ./gradlew assembleDebug assembleDebugAndroidTest
+
+      - name: Install Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 28
+          target: default
+          arch: x86
+
+      - name: Start Emulator
+        run: |
+          emulator -avd test -no-skin -no-audio -no-window &
+          android-wait-for-emulator
+
+      - name: Run UI Tests
+        run: ./gradlew connectedCheck
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: app/build/reports/androidTests/connected
+
