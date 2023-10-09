@@ -6,7 +6,7 @@ on:
       - main
   pull_request: # Add this trigger
     branches:
-      - main
+      - '*'
 
 jobs:
   build:
