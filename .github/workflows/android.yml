@@ -24,7 +24,11 @@ jobs:
       uses: ReactiveCircus/android-emulator-runner@v2.28.0
       with: 
         api-level: 30
-        scripts: ./gradlew connectedDebugAndroidTest
+        emulator-build: latest
+        script: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86"
+
+    - name: Run test
+      run: ./gradlew connectedAndroidTest
       
 
    
