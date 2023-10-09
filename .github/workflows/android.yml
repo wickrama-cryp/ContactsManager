@@ -27,6 +27,8 @@ jobs:
       run: ./gradlew assemble
       
     - name: Install Android SDK
+      env:
+          ANDROID_HOME: $RUNNER_WORKSPACE/E:\Android\Sdk
       run: |
         wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
         unzip -q commandlinetools-linux-7583922_latest.zip -d $ANDROID_HOME/cmdline-tools
