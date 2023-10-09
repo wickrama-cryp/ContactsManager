@@ -26,24 +26,30 @@ jobs:
     - name: Build Project
       run: ./gradlew assemble
       
-    - name: Install Android SDK
-      env:
-          ANDROID_HOME: $RUNNER_WORKSPACE/E:\Android\Sdk
+    - name: Download and Install Android SDK
       run: |
         wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-        unzip -q commandlinetools-linux-7583922_latest.zip -d $ANDROID_HOME/cmdline-tools
-        mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "platforms;android-30" "system-images;android-30;google_apis;x86" "build-tools;30.0.0"
+        unzip -q commandlinetools-linux-7583922_latest.zip -d $GITHUB_WORKSPACE/android-sdk
+        export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+      working-directory: $GITHUB_WORKSPACE
 
-    - name: Create and start emulator
+    - name: Set up Android SDK Environment
       run: |
-        echo "no" | avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-30;google_apis;x86"
-        emulator -avd Pixel_4_XL_API_31 -no-window -no-audio -gpu off &
-        android-wait-for-emulator
-        
-    - name: List devices
+        echo "export ANDROID_HOME=$GITHUB_WORKSPACE/android-sdk" >> $GITHUB_ENV
+        echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Create AVD
       run: |
-        adb devices
+        avdmanager create avd -n Pixel_4_XL_API_31 -k "system-images;android-30;google_apis;x86"
+      shell: bash
+
+    - name: Start Android Emulator
+      run: emulator -avd Pixel_4_XL_API_31 -no-window -no-audio -gpu off &
+
+    - name: Wait for Emulator to be Ready
+      run: android-wait-for-emulator
 
     - name: Build and run Espresso tests
       run: |
