@@ -23,6 +23,7 @@ public class TestAndroid {
     public ActivityScenarioRule<MainActivity> activityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
+
     @Test
     public void testMainMenuDisplay() {
         // Launch the app by starting the MainActivity
