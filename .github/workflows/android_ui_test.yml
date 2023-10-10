@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: macOS
 
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
         run: ./gradlew assembleDebug assembleDebugAndroidTest
 
       - name: Install Emulator
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: ReactiveCircus/android-emulator-runner@v2.28.0
         with:
           api-level: 28
           target: default
